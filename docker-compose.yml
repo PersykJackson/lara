@@ -1,0 +1,39 @@
+version: '3.3'
+services:
+    nginx:
+        image: nginx
+        volumes:
+            - ./nginx.conf:/etc/nginx/conf.d/default.conf
+            - ./:/app/
+        depends_on:
+            -   php
+        ports:
+            - '8000:80'
+        networks:
+            - default
+    php:
+        build: .
+        working_dir: /app/
+        volumes:
+            - ./:/app/
+        depends_on:
+            - database
+        environment:
+            - WAIT_HOSTS=database:3306
+            - WAIT_SLEEP_INTERVAL=5
+        command: bash -c 'npm run build && /wait && php artisan migrate && php-fpm'
+        networks:
+            - default
+    database:
+        image: mysql
+        environment:
+            - MYSQL_DATABASE=${DB_DATABASE}
+            - MYSQL_USER=${DB_USERNAME}
+            - MYSQL_PASSWORD=${DB_PASSWORD}
+            - MYSQL_RANDOM_ROOT_PASSWORD=true
+        restart: always
+        networks:
+            - default
+networks:
+    default:
+        driver: bridge
