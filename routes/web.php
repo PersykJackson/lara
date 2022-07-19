@@ -17,6 +17,15 @@ Route::get('/', function () {
     return view('welcome');
 });
 
+Route::middleware('auth')->group(function () {
+    Route::prefix('photos')->group(function () {
+        Route::get('/', [\App\Http\Controllers\PhotoController::class, 'index'])->name('photos');
+        Route::post('/', [\App\Http\Controllers\PhotoController::class, 'save'])->name('savePhoto');
+
+        Route::view('/save', 'photos.save');
+    });
+});
+
 Route::get('/dashboard', function () {
     return view('dashboard');
 })->middleware(['auth'])->name('dashboard');
