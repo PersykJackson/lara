@@ -1,6 +1,8 @@
 <?php
 
 use Illuminate\Support\Facades\Route;
+use App\Http\Controllers\PhotoController;
+use App\Http\Controllers\AdminController;
 
 /*
 |--------------------------------------------------------------------------
@@ -19,10 +21,16 @@ Route::get('/', function () {
 
 Route::middleware('auth')->group(function () {
     Route::prefix('photos')->group(function () {
-        Route::get('/', [\App\Http\Controllers\PhotoController::class, 'index'])->name('photos');
-        Route::post('/', [\App\Http\Controllers\PhotoController::class, 'save'])->name('savePhoto');
+        Route::get('/', [PhotoController::class, 'index'])->name('photos');
+        Route::post('/', [PhotoController::class, 'save'])->name('savePhoto');
 
         Route::view('/save', 'photos.save');
+    });
+
+    Route::prefix('admin')->group(function () {
+        Route::get('/', fn () => redirect('admin/info'));
+
+        Route::get('/{tab}', [AdminController::class, 'index']);
     });
 });
 
