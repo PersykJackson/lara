@@ -56,6 +56,11 @@ return [
             'throw' => false,
         ],
 
+        'tabViews' => [
+            'driver' => 'local',
+            'root' => base_path('resources/views/admin/tabs'),
+        ],
+
     ],
 
     /*
