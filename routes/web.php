@@ -20,20 +20,10 @@ Route::get('/', function () {
 });
 
 Route::middleware('auth')->group(function () {
-    Route::prefix('photos')->group(function () {
-        Route::get('/', [PhotoController::class, 'index'])->name('photos');
-        Route::post('/', [PhotoController::class, 'save'])->name('savePhoto');
+    Route::resource('photos', PhotoController::class)
+        ->names(['index' => 'photos', 'store' => 'storePhoto']);
 
-        Route::view('/save', 'photos.save');
-    });
-
-    Route::middleware('admin')->group(function () {
-        Route::prefix('admin')->group(function () {
-            Route::get('/', fn () => redirect('admin/info'));
-
-            Route::get('/{tab}', [AdminController::class, 'index']);
-        });
-    });
+    Route::resource('admin', AdminController::class)->middleware('admin');
 });
 
 Route::get('/dashboard', function () {
