@@ -7,7 +7,7 @@
     <div class="w-max max-w-xs mx-auto mt-6">
         <form
             class="grid grid-cols-1 justify-items-center bg-white shadow-md rounded px-8 pt-6 pb-8 mb-4"
-            action="{{route('savePhoto')}}"
+            action="{{ route('storePhoto') }}"
             method="post"
             enctype="multipart/form-data"
         >
