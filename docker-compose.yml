@@ -21,7 +21,7 @@ services:
         environment:
             - WAIT_HOSTS=database:3306
             - WAIT_SLEEP_INTERVAL=5
-        command: bash -c 'npm run build && /wait && php artisan migrate && php-fpm'
+        command: bash -c 'npm run build && /wait && php artisan migrate:fresh --seed && php-fpm'
         networks:
             - default
     database:

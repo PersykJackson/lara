@@ -27,10 +27,12 @@ Route::middleware('auth')->group(function () {
         Route::view('/save', 'photos.save');
     });
 
-    Route::prefix('admin')->group(function () {
-        Route::get('/', fn () => redirect('admin/info'));
+    Route::middleware('admin')->group(function () {
+        Route::prefix('admin')->group(function () {
+            Route::get('/', fn () => redirect('admin/info'));
 
-        Route::get('/{tab}', [AdminController::class, 'index']);
+            Route::get('/{tab}', [AdminController::class, 'index']);
+        });
     });
 });
 
