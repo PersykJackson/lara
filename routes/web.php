@@ -23,7 +23,11 @@ Route::middleware('auth')->group(function () {
     Route::resource('photos', PhotoController::class)
         ->names(['index' => 'photos', 'store' => 'storePhoto']);
 
-    Route::resource('admin', AdminController::class)->middleware('admin');
+    Route::prefix('admin')->middleware('admin')->group(function () {
+        Route::get('/', [AdminController::class, 'index']);
+        Route::get('/{tab}', [AdminController::class, 'show']);
+        Route::put('/settings', [AdminController::class, 'updateSettings'])->name('updateSettings');
+    });
 });
 
 Route::get('/dashboard', function () {

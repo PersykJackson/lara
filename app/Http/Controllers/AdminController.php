@@ -2,7 +2,9 @@
 
 namespace App\Http\Controllers;
 
+use App\Http\Requests\SaveSettingsRequest;
 use App\Models\Admin;
+use App\Models\Setting;
 use Illuminate\Contracts\View\View;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Support\Facades\Redirect;
@@ -35,6 +37,20 @@ class AdminController extends Controller
      */
     public function show(string $tab): View
     {
-        return view('admin.index', ['tabs' => $this->model->getTabsList(), 'selectedTab' => $tab]);
+        return view("admin.tabs.$tab", [
+            'tabs' => $this->model->getTabsList(),
+            'selectedTab' => $tab,
+            'settings' => Setting::all(),
+        ]);
+    }
+
+    /**
+     * @param SaveSettingsRequest $request
+     * @param Setting $setting
+     * @return RedirectResponse
+     */
+    public function updateSettings(SaveSettingsRequest $request, Setting $setting): RedirectResponse
+    {
+        return $setting->updateSettings($request->except('_token'));
     }
 }

@@ -2,6 +2,7 @@
 
 namespace Database\Seeders;
 
+use App\Models\Setting;
 use Illuminate\Database\Console\Seeds\WithoutModelEvents;
 use Illuminate\Database\Seeder;
 use Illuminate\Support\Facades\Hash;
@@ -17,9 +18,9 @@ class DatabaseSeeder extends Seeder
      */
     public function run()
     {
-        $creationData = array_map(fn ($role) => ['title' => $role], array_values(config('constants.roles')));
+        $rolesCreationData = array_map(fn ($role) => ['title' => $role], array_values(config('constants.roles')));
 
-        $roles = Role::factory()->createMany($creationData);
+        $roles = Role::factory()->createMany($rolesCreationData);
 
         User::factory()->createMany([
             [
@@ -35,5 +36,16 @@ class DatabaseSeeder extends Seeder
                 'role' => $roles->last()->title,
             ],
         ]);
+
+        $settingsCreationData = array_map(
+            fn ($setting) => [
+                'title' => $setting['title'],
+                'short_title' => $setting['short_title'],
+                'value' => $setting['default']
+            ],
+            array_values(config('settings')),
+        );
+
+        Setting::factory()->createMany($settingsCreationData);
     }
 }

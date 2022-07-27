@@ -1,0 +1,14 @@
+@props(['tabs', 'selectedTab'])
+
+<x-app-layout>
+    <div class="grid grid-cols-[200px] w-full auto-rows-max items-center">
+        <div class="h-max col-start-1 text-center bg-white rounded p-2 self-start m-2">
+            @foreach($tabs as $tab)
+                <x-admin.tab :name="$tab" :isSelected="$tab === $selectedTab" />
+            @endforeach
+        </div>
+        <div class="col-start-2 m-2 mx-auto w-full">
+            {{ $slot }}
+        </div>
+    </div>
+</x-app-layout>
