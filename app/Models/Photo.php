@@ -13,16 +13,15 @@ class Photo extends Model
 {
     use HasFactory;
 
-    private const IMAGES_DIR = 'public/images';
-
     /**
      * @return string
      */
     private function getUserDir(): string
     {
         $id = Auth::id();
+        $imgDir = Setting::where('title', '=', config('settings.img_dir.title'))->get()->first()->value;
 
-        return self::IMAGES_DIR . "/$id";
+        return "$imgDir/$id";
     }
 
     /**
